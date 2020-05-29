@@ -1,26 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace SignalREmployee
 {
     public class Program
-    {
+    {        
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+        /// <summary>
+        /// Web host builder creation to start up the application
+        /// </summary>
+        /// <param name="args"> The host arguments</param>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>();
+
+        /// <summary>
+        /// Build web host for application 
+        /// </summary>
+        /// <param name="args"> The host arguments</param>
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((webHostBuilderContext, configurationbuilder) =>
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    var environment = webHostBuilderContext.HostingEnvironment;
+
+                    configurationbuilder
+                            .AddJsonFile("appsettings.json", optional: true);
+
+                    configurationbuilder.AddEnvironmentVariables();
+                })
+                .UseStartup<Startup>()
+                .Build();
     }
 }

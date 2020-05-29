@@ -25,7 +25,7 @@ namespace SignalREmployee.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<IEnumerable<Employee>> Get()
         {
             return await Respository.GetItemsAsync(CollectionId);
