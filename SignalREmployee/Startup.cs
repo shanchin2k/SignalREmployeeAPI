@@ -78,7 +78,7 @@ namespace SignalREmployee
             services.AddControllers(options => options.EnableEndpointRouting = false);
 
             services.AddSignalR();
-            services.AddMvcCore()                
+            services.AddMvcCore();               
 
             services.AddSingleton<IDocumentDBRepository<Employee>>(new DocumentDBRepository<Employee>());
         }
