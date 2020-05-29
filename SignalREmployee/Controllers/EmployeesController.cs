@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SignalREmployee.Data;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace SignalREmployee.Controllers
         }
 
         [HttpGet]
+        //[Authorize]
         public async Task<IEnumerable<Employee>> Get()
         {
             return await Respository.GetItemsAsync(CollectionId);
@@ -43,6 +45,7 @@ namespace SignalREmployee.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<bool> Post([FromBody]Employee employee)
         {
             try
