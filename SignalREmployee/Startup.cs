@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using SignalREmployee.APIHelper;
 using SignalREmployee.Data;
+using SignalREmployee.Hub;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -70,7 +71,7 @@ namespace SignalREmployee
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
-                .WithOrigins("http://localhost:4200");
+                .WithOrigins("http://localhost:4200", "http://192.168.1.239:4200");
             }));
 
             services.AddMvcCore(filter => filter.Filters.Add(new AuthenticationAttribute()));
@@ -81,6 +82,7 @@ namespace SignalREmployee
             services.AddMvcCore();               
 
             services.AddSingleton<IDocumentDBRepository<Employee>>(new DocumentDBRepository<Employee>());
+            //services.AddSingleton<INotificationBroadcaster, NotificationBroadcaster>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.  
@@ -94,6 +96,7 @@ namespace SignalREmployee
             
             
             app.UseAuthentication();
+            
             app.UseStaticFiles();
             app.UseCors("CorsPolicy");
             app.UseRouting();

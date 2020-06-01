@@ -73,7 +73,8 @@ namespace SignalREmployee.Controllers
                 if (ModelState.IsValid)
                 {
                     await Respository.UpdateItemAsync(employee.Id, employee, CollectionId);
-                    await _hubContext.Clients.All.BroadcastMessage();
+                    //await _hubContext.Clients.All.BroadcastMessage();
+                    await _hubContext.Clients.Group("Transaction").BroadcastMessage();
                 }
                 return true;
             }
